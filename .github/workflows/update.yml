@@ -1,1 +1,32 @@
+name: Actualizar GeoJSON con puntos de Aerobotics
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # Corre todos los días a las 6:00 AM UTC (1:00 AM Perú)
+  workflow_dispatch:        # También permite ejecutarlo manualmente desde GitHub
+
+jobs:
+  update-geojson:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependencias
+        run: pip install requests
+
+      - name: Ejecutar script de actualización
+        env:
+          AEROBOTICS_TOKEN:  ${{ secrets.AEROBOTICS_TOKEN }}
+          GITHUB_TOKEN:      ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO:       ${{ github.repository }}
+          GITHUB_FILE_PATH:  MapasAzureJson/MaestroLotesT_API.json   # ← ajustar si es necesario
+          POLIGONOS_FILE_PATH: MapasAzureJson/MaestroLotesT.json           # ← ajustar si es necesario
+        run: python update_geojson.py
 
