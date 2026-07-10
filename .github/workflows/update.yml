@@ -5,6 +5,9 @@ on:
     - cron: '0 6 * * *'   # Corre todos los días a las 6:00 AM UTC (1:00 AM Perú)
   workflow_dispatch:        # También permite ejecutarlo manualmente desde GitHub
 
+permissions:
+  contents: write
+  
 jobs:
   update-geojson:
     runs-on: ubuntu-latest
